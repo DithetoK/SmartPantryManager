@@ -1,12 +1,11 @@
 package com.example.smartpantry;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import  java.util.List;
 import android.view.View;
+import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +24,13 @@ public class MainActivity extends AppCompatActivity {
         textEmpty = findViewById(R.id.textEmpty);
         addIngredientsButton = findViewById(R.id.addIngredientButton);
         db = new DatabaseHelper(this);
+
+        //open Add/Edit screen
+        addIngredientsButton.setOnClickListener(e ->{
+            Intent intent = new Intent(MainActivity.this, AddEditActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     @Override
