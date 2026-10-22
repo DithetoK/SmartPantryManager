@@ -28,9 +28,9 @@ public class PantryAdapter extends ArrayAdapter<Ingredient>{
         itemQuantityText.setText(item.quantityText());
 
         if( item.expiry == null || item.expiry.isEmpty()){
-            itemQuantityText.setText("");
+            itemExpiryText.setText("");
         } else{
-            itemExpiryText.setText("Expires: " + item.expiry);
+            itemExpiryText.setText("Expiry Date: " + item.expiry);
         }
         return convertView;
     }
