@@ -82,5 +82,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("expiry", item.expiry);
         db.update("pantry", values, "id =?", new String[]{String.valueOf(item.id)});
     }
+
+    //delete
+    public void deleteItem(int id){
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete("pantry", "id =?", new String[]{String.valueOf(id)});
+    }
     }
 
