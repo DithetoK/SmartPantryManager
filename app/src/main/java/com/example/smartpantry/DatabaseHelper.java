@@ -90,6 +90,58 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete("pantry", "id =?", new String[]{String.valueOf(id)});
     }
 
+    //geta all recipes
+    public List<Recipe> getAllRecipes(){
+        List<Recipe> recipesList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id, name, steps FROM recipes ORDER BY name", null);
+        while(cursor.moveToNext()){
+            recipesList.add(new Recipe(cursor.getInt(0), cursor.getString(1), cursor.getString(2)));
+        }
+        cursor.close();
+        return recipesList;
+    }
+
+    //get one recipe
+    public Recipe getRecipe(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id, name, steps FROM recipes WHERE id = ?",
+                new String[]{String.valueOf(id)});
+        Recipe recipe = null;
+        if(cursor.moveToFirst()){
+            recipe = new Recipe(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+        }
+        cursor.close();
+        return recipe;
+    }
+
+    //get ingredients needed for 1 recipe
+    public List<Ingredient> getIngredientsNeeded(int recipeId){
+        List<Ingredient> ingredientList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id, name, quantity, unit FROM recipe_ingredients WHERE recipe_id = ?",
+                new String[]{String.valueOf(recipeId)});
+        while(cursor.moveToNext()){
+            ingredientList.add(new Ingredient(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), cursor.getString(3), ""));
+        }
+        cursor.close();
+        return ingredientList;
+    }
+
+    //get matching recipes
+    public List<Recipe> getPossibleRecipes(){
+        List<Ingredient> pantry = getAllItems();
+        List<Recipe> possible = new ArrayList<>();
+        for(Recipe recipe : getAllRecipes()){
+            List<Ingredient> required = getIngredientsNeeded(recipe.id);
+            if(MatchRecipes.isPossible(required,pantry)){
+                possible.add(recipe);
+            }
+        }
+        return possible;
+    }
+
+
     //Add recipes and ingredients
     private void addRecipe(SQLiteDatabase db, String name, String steps, String... ingredients){
         ContentValues values = new ContentValues();
