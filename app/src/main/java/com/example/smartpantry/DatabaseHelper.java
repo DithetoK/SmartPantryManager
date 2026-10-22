@@ -46,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.insert("pantry", null, values);
         }
 
+        //get all ingredients
         public List<Ingredient> getAllItems(){
         List<Ingredient> list = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -56,5 +57,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return list;
         }
+
+        //read one item
+    public Ingredient getItem(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id, name, quantity, unit, expiry FROM pantry WHERE id = ?",
+                new String[]{String.valueOf(id)});
+        Ingredient item = null;
+        if(cursor.moveToFirst()){
+            item = (new Ingredient(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), cursor.getString(3), cursor.getString(4)));
+        }
+
+        cursor.close();
+        return item;
+    }
+
+    //update
+    public void updateItem(Ingredient item){
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", item.name);
+        values.put("quantity", item.quantity);
+        values.put("unit", item.unit);
+        values.put("expiry", item.expiry);
+        db.update("pantry", values, "id =?", new String[]{String.valueOf(item.id)});
+    }
     }
 
