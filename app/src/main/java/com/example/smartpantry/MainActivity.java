@@ -31,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        //open Add/Edit screen
+        pantryList.setOnItemClickListener((parent, view, position, id) ->{
+            Intent intent = new Intent(MainActivity.this, AddEditActivity.class);
+            intent.putExtra("item_id", items.get(position).id);
+            startActivity(intent);
+        });
+
     }
 
     @Override
