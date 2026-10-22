@@ -4,6 +4,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import  android.content.ContentValues;
 import android.database.Cursor;
+import java.util.ArrayList;
+import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private  static final String DB_NAME = "pantry.db";
     private static final int DB_VERSION = 1;
@@ -42,6 +44,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             values.put("unit", item.unit);
             values.put("expiry", item.expiry);
             db.insert("pantry", null, values);
+        }
+
+        public List<Ingredient> getAllItems(){
+        List<Ingredient> list = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id, name, quantity, unit, expiry FROM pantry ORDER BY name", null);
+        while(cursor.moveToNext()){
+            list.add(new Ingredient(cursor.getInt(0), cursor.getString(1), cursor.getDouble(2), cursor.getString(3), cursor.getString(4)));
+        }
+        cursor.close();
+        return list;
         }
     }
 
