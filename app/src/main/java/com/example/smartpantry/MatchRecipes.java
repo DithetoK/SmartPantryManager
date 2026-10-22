@@ -16,5 +16,18 @@ public class MatchRecipes {
 
         }
 
+        //convert ub=nit measurements
+    public static String baseUnit(String unit){
+        if(unit.equals("kg") || unit.equals("g")) return "g";
+        if(unit.equals("l") || unit.equals("ml")) return "ml";
+        return  unit;
+    }
+
+    //convert amount to base unit
+    public static double baseAmount(double quantity, String unit){
+        if(unit.equals("kg") || unit.equals("l")) return quantity * 1000;
+        return quantity;
+    }
+
     }
 
