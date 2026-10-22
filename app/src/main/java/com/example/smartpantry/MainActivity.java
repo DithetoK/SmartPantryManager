@@ -1,21 +1,29 @@
 package com.example.smartpantry;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import  java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    ListView pantryList;
+    TextView textEmpty;
+    Button addIngredientsButton;
+    DatabaseHelper db;
+    List<Ingredient> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
+
+        pantryList = findViewById(R.id.pantryList);
+        textEmpty = findViewById(R.id.textEmpty);
+        addIngredientsButton = findViewById(R.id.addIngredientButton);
+        db = new DatabaseHelper(this);
     }
 }
