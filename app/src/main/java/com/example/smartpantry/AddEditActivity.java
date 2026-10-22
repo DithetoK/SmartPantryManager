@@ -5,6 +5,7 @@ import android.widget.*;
 import android.view.*;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -37,6 +38,7 @@ public class AddEditActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter((unitAdapter));
         saveButton.setOnClickListener(v -> saveItem());
+        deleteButton.setOnClickListener(v -> confirmDelete());
 
         itemId = getIntent().getIntExtra("item_id", -1);
         if(itemId != -1){
@@ -107,5 +109,18 @@ public class AddEditActivity extends AppCompatActivity {
 
         finish();
 
+    }
+
+    private void confirmDelete(){
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Ingredient")
+                .setMessage("Are you sure that you want to delete this ingredient?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    db.deleteItem(itemId);
+                    Toast.makeText(this, "Ingredient deleted", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }
