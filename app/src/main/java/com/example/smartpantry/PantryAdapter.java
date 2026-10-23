@@ -1,11 +1,10 @@
 package com.example.smartpantry;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import  java.util.List;
+import android.content.*;
+import android.view.*;
+import android.widget.*;
+import  java.util.*;
+import java.text.*;
+import android.graphics.*;
 
 public class PantryAdapter extends ArrayAdapter<Ingredient>{
     public PantryAdapter(Context context, List<Ingredient> items){
@@ -27,11 +26,28 @@ public class PantryAdapter extends ArrayAdapter<Ingredient>{
         itemNameText.setText(item.name);
         itemQuantityText.setText(item.quantityText());
 
+        SharedPreferences preferences = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        boolean alertsOn = preferences.getBoolean("expiry_alerts", true);
+
         if( item.expiry == null || item.expiry.isEmpty()){
             itemExpiryText.setText("");
+        } else if(alertsOn && isExpiringSoon(item.expiry)){
+            itemExpiryText.setText("Expiring soon: " + item.expiry);
+            itemExpiryText.setTextColor(Color.RED);
         } else{
             itemExpiryText.setText("Expiry Date: " + item.expiry);
+            itemExpiryText.setTextColor(Color.GRAY);
         }
         return convertView;
+    }
+
+    private boolean isExpiringSoon(String expiry){
+        try{
+            Date expiryDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(expiry);
+            long days = (expiryDate.getTime() - System.currentTimeMillis()) / (1000 * 60 * 60 * 24);
+            return days <= 3;
+        } catch (ParseException e){
+            return false;
+        }
     }
 }

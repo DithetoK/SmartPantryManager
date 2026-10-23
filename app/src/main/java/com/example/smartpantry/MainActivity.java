@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import  java.util.List;
-import android.view.View;
+import android.view.*;
 import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,5 +51,23 @@ public class MainActivity extends AppCompatActivity {
         } else{
             textEmpty.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(item.getItemId() == R.id.action_possible){
+            startActivity(new Intent(this, PossibleActivity.class));
+            return true;
+        } else if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent (this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
