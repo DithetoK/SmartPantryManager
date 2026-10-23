@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import java.util.*;
+import android.content.*;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,13 @@ public class PossibleActivity extends AppCompatActivity {
         possibleList = findViewById(R.id.possibleList);
         noMatchText = findViewById(R.id.noMatchText);
         db = new DatabaseHelper(this);
+
+        //tap recipe, open details screen,send recipe id
+        possibleList.setOnItemClickListener((parent, view, position, id) ->{
+            Intent intent = new Intent(PossibleActivity.this, RecipeDetailActivity.class);
+            intent.putExtra("recipe_id", possible.get(position).id);
+            startActivity(intent);
+        });
     }
 
     @Override
