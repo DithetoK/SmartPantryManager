@@ -22,7 +22,6 @@ public class PossibleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_possible);
-        setContentView(R.layout.activity_possible);
         setTitle("Possible Recipes");
 
         possibleList = findViewById(R.id.possibleList);
@@ -34,6 +33,7 @@ public class PossibleActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         possible = db.getPossibleRecipes();
+
 
         possibleList.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,possible));
